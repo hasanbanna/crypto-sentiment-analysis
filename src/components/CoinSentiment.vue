@@ -30,14 +30,24 @@ export default{
   components:{
     chart
   },
+  methods: {
+    getTweetsFromDatabase: function(){
+      axios.get("http://localhost:3000/tweets/"+this.name)
+      .then(response =>{
+        this.tweet_data = response.data
+      })
+      .catch(e =>{
+        this.errors.push(e)
+      })  
+    }
+  },
   created(){
-    axios.get("http://localhost:3000/tweets/"+this.name)
-    .then(response =>{
-      this.tweet_data = response.data
-    })
-    .catch(e =>{
-      this.errors.push(e)
-    })
+    this.getTweetsFromDatabase();
+  },
+  watch: {
+    name: function(){
+      this.getTweetsFromDatabase();
+    }
   }
 }
 </script>

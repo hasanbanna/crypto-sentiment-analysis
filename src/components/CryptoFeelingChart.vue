@@ -1,7 +1,7 @@
 <script>
-  import { Bar, Line } from 'vue-chartjs'
+  import { Line } from 'vue-chartjs'
   export default {
-    extends: Bar, Line,
+    extends: Line,
     props: {
       name:{
         type: String,
@@ -10,6 +10,11 @@
       tweetData:{
         type: Array,
         required: true
+      }
+    },
+    data (){
+      return {
+        coinLabel: 'Average Sentiment Score'
       }
     },
     methods:{
@@ -38,41 +43,58 @@
         // time = min + ' ' + ampm;
         return time;
     },
-    getRandomColor: function() {
+      getRandomColor: function() {
       const letters = '0123456789ABCDEF'.split('');
       let color = '#';
       for (let i = 0; i < 6; i++ ) {
           color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
-  }
-  },
-    mounted (){
-      let that = this;
-      this.renderChart({
-        labels: this.tweetData.map(function(x){
-          return that.convertTimestamp(x.created_at / 1000);
-        }),
-        datasets: [{
-          type: 'line',
-          label: this.name+ ' Feelings',
-          fill: false,
-          backgroundColor:this.getRandomColor(),
-          data: this.tweetData.map(function(x){
-              return x.sentimentAverageScore;
-          })
-        }],
-        options: {
-          scales: {
-            xAxes: [{
-              type: 'time',
-              time: {
-                unit: 'day'
-            }
-          }]
+    },
+     drawChart: function(){
+        if (this.$data._chart) {
+          console.log(this.$data._chart);
+          this.$data._chart.destroy();
         }
-      }
-    })
+        let that = this;
+        this.renderChart({
+          labels: this.tweetComputedData.map(function(x){
+            return that.convertTimestamp(x.created_at / 1000);
+          }),
+          datasets: [{
+            type: 'line',
+            label: this.coinLabel,
+            fill: false,
+            backgroundColor:this.getRandomColor(),
+            data: this.tweetComputedData.map(function(x){
+                return x.sentimentAverageScore;
+            })
+          }],
+          options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                  unit: 'day'
+              }
+            }]
+          }
+        },
+     })
     }
+  },
+  mounted (){
+      this.drawChart();
+  },
+  watch: {
+    tweetData: function(){
+      this.drawChart();
+    }
+  },
+  computed: {
+    tweetComputedData: function(){
+     return this.tweetData;
+    }
+  }
 }
 </script>
