@@ -1,18 +1,15 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <coin-sentiment name="bitcoin"></coin-sentiment>
+    <coin-sentiment name="dash"></coin-sentiment>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import CoinSentiment from './components/CoinSentiment.vue'
 export default {
   name: 'app',
-  components: {
-    HelloWorld
-  }
+  components: { CoinSentiment }
 }
 </script>
 
@@ -21,8 +18,10 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.chart{
+  width: 50%;
 }
 </style>
