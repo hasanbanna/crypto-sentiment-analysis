@@ -1,5 +1,6 @@
 <template>
   <div class="sentiment-container">
+    <AllCoinBarChart></AllCoinBarChart>
     <h2>{{ currentCoin }}</h2>
     <!-- menu selection -->
     <select v-model="currentCoin">
@@ -14,15 +15,17 @@
 </template>
 <script>
 import CoinSentiment from './CoinSentiment.vue'
+import AllCoinBarChart from './AllCoinBarChart.vue'
+import { COINS } from './constants'
 export default {
     name: 'TweetSentimentAnalysis',
     data: function(){
       return {
-        coins: ["bitcoin","ethereum","ripple","litecoin","dash","monero","substratum","tron"],
+        coins: COINS,
         currentCoin: "bitcoin"
       }
     },
-    components: { CoinSentiment }
+    components: { CoinSentiment, AllCoinBarChart }
 }
   
 </script>

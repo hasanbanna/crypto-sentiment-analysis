@@ -10,7 +10,7 @@ import TweetSentimentAnalysis  from "./components/TweetSentimentAnalysis.vue";
 
 export default {
   name: 'app',
-  components: { TweetSentimentAnalysis }
+    components: { TweetSentimentAnalysis }
 }
 </script>
 

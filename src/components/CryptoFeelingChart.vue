@@ -53,7 +53,6 @@
     },
      drawChart: function(){
         if (this.$data._chart) {
-          console.log(this.$data._chart);
           this.$data._chart.destroy();
         }
         let that = this;
