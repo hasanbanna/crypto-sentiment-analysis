@@ -1,6 +1,6 @@
 <template>
   <div class="sentiment-container">
-    <AllCoinBarChart></AllCoinBarChart>
+    
     <h2>{{ currentCoin }}</h2>
     <!-- menu selection -->
     <select v-model="currentCoin">
@@ -9,23 +9,44 @@
         {{ coin }}
       </option>
     </select>
-    <!-- display chart based on selection -->
-    <CoinSentiment :name="currentCoin"></CoinSentiment>
+
+    <form>
+      Start Date:
+      <input type="date" name="start-date" v-model="start_date">
+      <br/>
+      End Date:
+      <input type="date" name="end-date" v-model="end_date">
+    </form>
+    <div v-if="start_date.length > 0 && end_date.length > 0">
+      <CoinSentiment 
+        :name="currentCoin"      
+        :startDate="start_date"
+        :endDate="end_date"
+        :hasDate="true">  
+      </CoinSentiment>
+    </div>
+    <div v-else>
+      <CoinSentiment 
+        :name="currentCoin"      
+        :hasDate="false">  
+      </CoinSentiment>
+    </div>
   </div>
 </template>
 <script>
 import CoinSentiment from './CoinSentiment.vue'
-import AllCoinBarChart from './AllCoinBarChart.vue'
 import { COINS } from './constants'
 export default {
     name: 'TweetSentimentAnalysis',
     data: function(){
       return {
         coins: COINS,
-        currentCoin: "bitcoin"
+        currentCoin: "bitcoin",
+        start_date: "",
+        end_date: ""
       }
     },
-    components: { CoinSentiment, AllCoinBarChart }
+    components: { CoinSentiment }
 }
   
 </script>

@@ -12,18 +12,28 @@
 </template>
 <script>
 import axios from 'axios';
-import chart from './CryptoFeelingChart.vue'
+import chart from './Chart.vue'
 export default{
   name: "CoinSentiment",
   data: function(){
     return {
       tweet_data: [],
-      errors: []
+      errors: [], 
     } 
   },
   props:{
     name: {
       type: String,
+      required: true
+    },
+    startDate:{
+      type: String,
+    },
+    endDate: {
+      type: String
+    },
+    hasDate: {
+      type: Boolean,
       required: true
     }
   },
@@ -31,22 +41,42 @@ export default{
     chart
   },
   methods: {
-    getTweetsFromDatabase: function(){
+    getAllTweets: function(){
       axios.get("http://localhost:3000/tweets/"+this.name)
       .then(response =>{
-        this.tweet_data = response.data
+        this.tweet_data = response.data;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });  
+    },
+    getTweetsFromDateRange: function(){
+      axios.get(`http://localhost:3000/tweets/${this.name}/${this.startDate}/${this.endDate}`)
+      .then(response =>{
+        this.tweet_data = response.data;
       })
       .catch(e =>{
-        this.errors.push(e)
-      })  
+        this.errors.push(e);
+      });
     }
   },
   created(){
-    this.getTweetsFromDatabase();
+      this.getAllTweets();  
   },
   watch: {
     name: function(){
-      this.getTweetsFromDatabase();
+      this.getAllTweets();
+    },
+    hasDate: function(){
+      if(this.hasDate){
+        this.getTweetsFromDateRange();  
+      }
+    },
+    endDate: function(){
+      this.getTweetsFromDateRange();
+    },
+    startDate: function(){
+      this.getTweetsFromDateRange();
     }
   }
 }

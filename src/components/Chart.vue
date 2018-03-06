@@ -14,7 +14,13 @@
     },
     data (){
       return {
-        coinLabel: 'Average Sentiment Score'
+        coinLabel: 'Average Sentiment Score',
+        colorObj: {
+          bitcoin: "#5B6F62",
+          ethereum:"#C9A93F",
+          ripple: "#CB9355",
+          litecoin: "#A66D49"
+        }
       }
     },
     methods:{
@@ -43,14 +49,6 @@
         // time = min + ' ' + ampm;
         return time;
     },
-      getRandomColor: function() {
-      const letters = '0123456789ABCDEF'.split('');
-      let color = '#';
-      for (let i = 0; i < 6; i++ ) {
-          color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    },
      drawChart: function(){
         if (this.$data._chart) {
           this.$data._chart.destroy();
@@ -64,7 +62,7 @@
             type: 'line',
             label: this.coinLabel,
             fill: false,
-            backgroundColor:this.getRandomColor(),
+            backgroundColor: this.colorObj[this.name],
             data: this.tweetComputedData.map(function(x){
                 return x.sentimentAverageScore;
             })
